@@ -69,13 +69,13 @@ class TextEntryCell: UITableViewCell, FormTableViewCell {
     func configureTextField(inout row: TextEntryFormRow) -> UITextField {
         if (textField == nil) {
             let newTextField = NamedTextField(frame: contentView.bounds)
-            newTextField.setTranslatesAutoresizingMaskIntoConstraints(false)
+            newTextField.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(newTextField)
             textField = newTextField
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[textField]-|", options: nil, metrics: nil, views: ["textField":newTextField]))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-15-[textField]-|", options: [], metrics: nil, views: ["textField":newTextField]))
             textField = newTextField
         }
-        formatterAdapter = map(row.formatter) { FormatterAdapter(formatter: $0) }
+        formatterAdapter = row.formatter.map { FormatterAdapter(formatter: $0) }
         
         textField?.text = row.value as? String
         textField?.placeholder = row.name
@@ -83,7 +83,7 @@ class TextEntryCell: UITableViewCell, FormTableViewCell {
         textField?.delegate = formatterAdapter
         textField?.enabled = row.enabled
         
-        map(textField, { (field :NamedTextField) -> ActionTarget in
+        _ = textField.map({ (field :NamedTextField) -> ActionTarget in
             ActionTarget.clear(field, controlEvents: .EditingChanged)
             return ActionTarget(control: field, controlEvents: .EditingChanged, action: { _ in
                 row.value = field.text

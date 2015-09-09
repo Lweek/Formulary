@@ -17,13 +17,14 @@ class FormatterAdapter :NSObject, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let newString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        let newString = NSString(string: textField.text!).stringByReplacingCharactersInRange(range, withString: string)
         if newString == "" {
             return true
         }
+
         var obj :AnyObject?
         formatter.getObjectValue(&obj, forString: newString, errorDescription: nil)
-        if let obj :AnyObject = obj {
+        if obj != nil {
             return true
         }
         return false
@@ -31,7 +32,7 @@ class FormatterAdapter :NSObject, UITextFieldDelegate {
     
     func textFieldDidEndEditing(textField: UITextField) {
         var obj :AnyObject?
-        formatter.getObjectValue(&obj, forString: textField.text, errorDescription: nil)
+        formatter.getObjectValue(&obj, forString: textField.text!, errorDescription: nil)
         if let obj :AnyObject = obj {
             textField.text = formatter.stringForObjectValue(obj)
         }

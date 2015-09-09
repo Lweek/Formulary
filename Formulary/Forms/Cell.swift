@@ -58,7 +58,7 @@ class BasicFormCell :UITableViewCell, FormTableViewCell {
             textLabel?.text = row.name
             let s = UISwitch()
             accessoryView = s
-            ActionTarget(control: s, action: { _ in
+            _ = ActionTarget(control: s, action: { _ in
                 row.value = s.on
             })
             
@@ -84,15 +84,15 @@ class BasicFormCell :UITableViewCell, FormTableViewCell {
             button.setTitle(row.name, forState: .Normal)
             button.setTitleColor(tintColor, forState: .Normal)
             
-            button.setTranslatesAutoresizingMaskIntoConstraints(false)
+            button.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(button)
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[button]-|", options: nil, metrics: nil, views: ["button":button]))
-            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[button]-|", options: nil, metrics: nil, views: ["button":button]))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-[button]-|", options: [], metrics: nil, views: ["button":button]))
+            contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-[button]-|", options: [], metrics: nil, views: ["button":button]))
             
-            var emptyAction :Action = { _ in }
+            let emptyAction :Action = { _ in }
             
             if row.enabled {
-                ActionTarget(control: button, controlEvents: UIControlEvents.TouchUpInside, action: row.action ?? emptyAction)
+                _ = ActionTarget(control: button, controlEvents: UIControlEvents.TouchUpInside, action: row.action != nil ? row.action! : emptyAction)
             }
         case .Specialized:
             assert(false, "Specialized cells should not be configured here.")

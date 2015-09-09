@@ -19,15 +19,15 @@ class FormDataSource: NSObject, UITableViewDataSource {
     // MARK: Data
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return count(form.sections)
+        return form.sections.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return count(form.sections[section].rows)
+        return form.sections[section].rows.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var row = rowForIndexPath(indexPath, form)
+        let row = rowForIndexPath(indexPath, form: form)
         var cell = tableView.dequeueReusableCellWithIdentifier(identifier(row)) as! FormTableViewCell
         cell.formRow = row
         return cell as! UITableViewCell
